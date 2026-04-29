@@ -1,1 +1,520 @@
-<!DOCTYPE html><html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><link rel="stylesheet" type="text/css" id="u0" href="https://rakko.tools/tools/129/lib/tinymce/skins/ui/oxide/content.min.css"><link rel="stylesheet" type="text/css" id="u1" href="https://rakko.tools/tools/129/lib/tinymce/skins/content/default/content.min.css"></head><body id="tinymce" class="mce-content-body " data-id="content" contenteditable="true" spellcheck="false"><p>&lt;!DOCTYPE html&gt;<br>&lt;html lang="ja"&gt;<br>&lt;head&gt;<br>&nbsp; &nbsp; &lt;meta charset="UTF-8"&gt;<br>&nbsp; &nbsp; &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;<br>&nbsp; &nbsp; &lt;title&gt;春のいぶき - わくわく言葉ランド&lt;/title&gt;<br>&nbsp; &nbsp; &lt;script src="https://cdn.tailwindcss.com"&gt;&lt;/script&gt;<br>&nbsp; &nbsp; &lt;link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&amp;family=Shippori+Mincho:wght@400;700&amp;display=swap" rel="stylesheet"&gt;<br>&nbsp; &nbsp; &lt;style&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; :root {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; --spring-pink: #ffecf2;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; --spring-blue: #e0f2fe;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; --sakura-color: #ffb7c5;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; body {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; font-family: 'Zen Maru Gothic', sans-serif;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; background: linear-gradient(135deg, var(--spring-blue) 0%, var(--spring-pink) 100%);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; min-height: 100vh;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; overflow-x: hidden;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; canvas#sakura-canvas {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; position: fixed;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; top: 0; left: 0; width: 100%; height: 100%;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; pointer-events: none; z-index: 0;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; .glass {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; background: rgba(255, 255, 255, 0.7);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; backdrop-filter: blur(12px);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; -webkit-backdrop-filter: blur(12px);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; border: 1px solid rgba(255, 255, 255, 0.4);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; .mincho { font-family: 'Shippori Mincho', serif; }<br>&nbsp; &nbsp; &nbsp; &nbsp; .vertical-text {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; writing-mode: vertical-rl;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; text-orientation: mixed;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; .tab-active {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; color: #db2777;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; background: white;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; box-shadow: 0 4px 12px rgba(219, 39, 119, 0.2);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; transform: scale(1.05);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; .bounce-hover:hover { transform: scale(1.02); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }<br>&nbsp; &nbsp; &nbsp; &nbsp; .card-spring { cursor: pointer; transition: all 0.3s ease; }<br>&nbsp; &nbsp; &nbsp; &nbsp; .card-spring:active { transform: scale(0.95); }<br>&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; @keyframes pulse-gold {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% { box-shadow: 0 0 0 10px rgba(250, 204, 21, 0); }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; .badge-get { animation: pulse-gold 2s infinite; background: #facc15 !important; color: white !important; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; .sticker-item { cursor: pointer; border-radius: 12px; transition: all 0.2s; }<br>&nbsp; &nbsp; &nbsp; &nbsp; .sticker-item:hover { background: rgba(255, 255, 255, 0.8); transform: rotate(5deg); }<br>&nbsp; &nbsp; &nbsp; &nbsp; .sticker-selected { border: 3px solid #f472b6; background: white; transform: scale(1.1); }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; .comment-bubble {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; background: white;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; border-radius: 12px;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; padding: 6px 12px;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; font-size: 0.75rem;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; position: relative;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; box-shadow: 0 2px 4px rgba(0,0,0,0.05);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; margin-bottom: 4px;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; .comment-bubble::after {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; content: '';<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; position: absolute;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; left: 10px;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; bottom: -8px;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; border-style: solid;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; border-width: 8px 8px 0 0;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; border-color: white transparent transparent transparent;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &lt;/style&gt;<br>&lt;/head&gt;<br>&lt;body class="text-gray-800"&gt;</p><p>&nbsp; &nbsp; &lt;canvas id="sakura-canvas"&gt;&lt;/canvas&gt;</p><p>&nbsp; &nbsp; &lt;!-- Character Guide --&gt;<br>&nbsp; &nbsp; &lt;div id="guide-char" class="fixed bottom-6 right-6 z-50 flex items-end gap-3 group cursor-pointer" onclick="talkHaruChan()"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="glass p-3 rounded-2xl shadow-lg max-w-[200px] text-xs opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p id="haru-msg"&gt;こんにちは！いっしょに春をみつけよう！&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="w-16 h-16 bg-white rounded-full shadow-lg border-2 border-pink-300 flex items-center justify-center text-3xl animate-bounce"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 🧚‍♀️<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &lt;/div&gt;</p><p>&nbsp; &nbsp; &lt;!-- Header --&gt;<br>&nbsp; &nbsp; &lt;header class="sticky top-0 z-40 px-4 py-3"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="max-w-5xl mx-auto glass rounded-2xl shadow-sm px-6 py-3 flex flex-wrap justify-between items-center gap-4"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;h1 class="text-xl md:text-2xl font-bold text-pink-600 flex items-center gap-2"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span&gt;🌸&lt;/span&gt;春のいぶき<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/h1&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="flex items-center gap-3"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="flex gap-1" id="badge-container"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span id="badge-1" class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm grayscale transition-all" title="節気をよんだ！"&gt;📖&lt;/span&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span id="badge-2" class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm grayscale transition-all" title="はじめて投稿した！"&gt;🖋️&lt;/span&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span id="badge-3" class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm grayscale transition-all" title="感想を伝えた！"&gt;💬&lt;/span&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;nav class="flex gap-1 p-1 bg-white/40 rounded-xl"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;button onclick="switchTab('learn')" id="tab-learn" class="px-3 md:px-5 py-2 rounded-lg font-bold transition-all tab-active"&gt;学ぶ&lt;/button&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;button onclick="switchTab('write')" id="tab-write" class="px-3 md:px-5 py-2 rounded-lg font-bold transition-all text-gray-500"&gt;つくる&lt;/button&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;button onclick="switchTab('gallery')" id="tab-gallery" class="px-3 md:px-5 py-2 rounded-lg font-bold transition-all text-gray-500"&gt;みる&lt;/button&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/nav&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &lt;/header&gt;</p><p>&nbsp; &nbsp; &lt;main class="max-w-5xl mx-auto p-4 relative z-10"&gt;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &lt;!-- 1. Learn Section --&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;section id="sec-learn" class="space-y-8"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="glass p-8 rounded-3xl border-none shadow-xl text-center"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;h2 class="text-3xl font-bold text-pink-700 mincho italic mb-2"&gt;春のひみつカード&lt;/h2&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-gray-600 text-sm"&gt;カードをえらんで、春の言葉をおぼえよう。クリックすると豆知識がでるよ！&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div onclick="showTip('立春', '昔はこの日が新しい一年の始まりだったんだよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="text-4xl mb-4"&gt;🌱&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;h3 class="text-2xl font-bold mincho text-pink-600"&gt;立春&lt;/h3&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-xs text-pink-400 my-2"&gt;2月4日ごろ&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-sm text-gray-600"&gt;冬がおわり、春がはじまる日。暦（こよみ）のうえではもう春なんだね。&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div onclick="showTip('雨水', 'ひな人形を飾るのにぴったりの日と言われているよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="text-4xl mb-4"&gt;💧&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;h3 class="text-2xl font-bold mincho text-pink-600"&gt;雨水&lt;/h3&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-xs text-pink-400 my-2"&gt;2月19日ごろ&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-sm text-gray-600"&gt;雪が雨にかわるころ。土がやわらかくなって、植物がのびるじゅんびをするよ。&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div onclick="showTip('啓蟄', 'カエルやヘビもこのころに起きだしてくるよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="text-4xl mb-4"&gt;🦋&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;h3 class="text-2xl font-bold mincho text-pink-600"&gt;啓蟄&lt;/h3&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-xs text-pink-400 my-2"&gt;3月6日ごろ&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-sm text-gray-600"&gt;虫たちが冬眠からさめて、土の中から顔をだすころだよ。&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div onclick="showTip('春分', '「ぼたもち」を食べてお祝いする風習があるよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="text-4xl mb-4"&gt;☀️&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;h3 class="text-2xl font-bold mincho text-pink-600"&gt;春分&lt;/h3&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-xs text-pink-400 my-2"&gt;3月21日ごろ&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-sm text-gray-600"&gt;昼と夜の長さが同じになる日。ここから日がどんどん長くなっていくよ。&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div onclick="showTip('清明', '「清浄明潔」をちぢめたものだよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="text-4xl mb-4"&gt;🌸&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;h3 class="text-2xl font-bold mincho text-pink-600"&gt;清明&lt;/h3&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-xs text-pink-400 my-2"&gt;4月5日ごろ&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-sm text-gray-600"&gt;空気がキラキラして、花がさきほこる一番きれいなときだよ。&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div onclick="showTip('穀雨', 'この雨のおかげで、おいしい野菜が育つんだよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="text-4xl mb-4"&gt;🌿&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;h3 class="text-2xl font-bold mincho text-pink-600"&gt;穀雨&lt;/h3&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-xs text-pink-400 my-2"&gt;4月20日ごろ&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-sm text-gray-600"&gt;田畑をうるおす春の雨。夏にむかって木々がしげるよ。&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;/section&gt;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &lt;!-- 2. Write Section --&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;section id="sec-write" class="hidden space-y-6"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="glass p-8 rounded-3xl shadow-xl"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="grid grid-cols-1 lg:grid-cols-2 gap-8"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="space-y-6"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;label class="block text-sm font-bold text-pink-500 mb-2 px-1"&gt;🖋️ おなまえ&lt;/label&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;input type="text" id="author" placeholder="なまえを書いてね"&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class="w-full p-4 rounded-xl border-none ring-2 ring-pink-100 focus:ring-4 focus:ring-pink-300 outline-none transition-all bg-white/60"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;label class="block text-sm font-bold text-pink-500 mb-3 px-1"&gt;🎨 作品の種類&lt;/label&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="flex gap-4 text-sm"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;label class="flex-1 cursor-pointer group"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;input type="radio" name="type" value="俳句" checked class="hidden peer"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="p-3 text-center rounded-xl border-2 border-transparent bg-white/60 peer-checked:bg-pink-500 peer-checked:text-white transition-all"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 俳句 &lt;span class="block text-[10px]"&gt;五・七・五&lt;/span&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/label&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;label class="flex-1 cursor-pointer group"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;input type="radio" name="type" value="短歌" class="hidden peer"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="p-3 text-center rounded-xl border-2 border-transparent bg-white/60 peer-checked:bg-pink-500 peer-checked:text-white transition-all"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 短歌 &lt;span class="block text-[10px]"&gt;五・七・五・七・七&lt;/span&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/label&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;label class="block text-sm font-bold text-pink-500 mb-3 px-1"&gt;✨ カードのスタンプ&lt;/label&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="grid grid-cols-5 gap-2" id="sticker-selector"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div onclick="selectSticker('🌸')" class="sticker-item p-2 text-2xl flex justify-center sticker-selected"&gt;🌸&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div onclick="selectSticker('🦋')" class="sticker-item p-2 text-2xl flex justify-center"&gt;🦋&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div onclick="selectSticker('🐣')" class="sticker-item p-2 text-2xl flex justify-center"&gt;🐣&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div onclick="selectSticker('🐝')" class="sticker-item p-2 text-2xl flex justify-center"&gt;🐝&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div onclick="selectSticker('🍀')" class="sticker-item p-2 text-2xl flex justify-center"&gt;🍀&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;label class="block text-sm font-bold text-pink-500 mb-2 px-1"&gt;💭 こめた想い&lt;/label&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;textarea id="work-comment" placeholder="どんな春を見つけたかな？"&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class="w-full p-4 h-24 rounded-xl border-none ring-2 ring-pink-50 focus:ring-4 focus:ring-pink-300 outline-none transition-all bg-white/60" style="resize:none;"&gt;&lt;/textarea&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="flex flex-col"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;label class="block text-sm font-bold text-pink-500 mb-2 px-1"&gt;📜 あなたの作品&lt;/label&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="flex-1 relative bg-white/50 rounded-2xl p-6 border-4 border-double border-pink-200 flex items-center justify-center overflow-hidden"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div id="preview-sticker" class="absolute top-4 right-4 text-4xl opacity-50 select-none"&gt;🌸&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;textarea id="work-content" placeholder="五・七・五 で書いてみよう！"&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class="w-full h-64 p-4 mincho text-3xl vertical-text bg-transparent outline-none text-gray-700 leading-loose placeholder:text-gray-200"&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; style="resize: none;"&gt;&lt;/textarea&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;button onclick="saveWork()" class="mt-6 py-4 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-2xl shadow-lg transform active:scale-95 text-lg transition-all"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; みんなに見せる！ 🚀<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/button&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;/section&gt;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &lt;!-- 3. Gallery Section --&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;section id="sec-gallery" class="hidden space-y-8"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="flex flex-wrap justify-between items-end gap-4"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;h2 class="text-3xl font-bold text-gray-800 mincho"&gt;春のいぶきギャラリー&lt;/h2&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-gray-500 mt-1"&gt;みんなの「春」にあたたかい感想をおくろう！&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div id="gallery-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-20"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div id="empty-msg" class="col-span-full py-32 text-center glass rounded-3xl"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="text-6xl mb-4"&gt;📭&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="text-gray-400 italic"&gt;まだ作品が届いていないよ！&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;/section&gt;</p><p>&nbsp; &nbsp; &lt;/main&gt;</p><p>&nbsp; &nbsp; &lt;!-- Modal --&gt;<br>&nbsp; &nbsp; &lt;div id="modal" class="fixed inset-0 bg-pink-900/10 backdrop-blur-md hidden flex items-center justify-center p-4 z-[100]"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="bg-white p-10 rounded-[40px] max-w-sm w-full text-center space-y-6 shadow-2xl transform transition-all scale-95 opacity-0" id="modal-content"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div id="modal-icon" class="text-7xl"&gt;🎁&lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;h3 id="modal-title" class="text-2xl font-bold text-pink-600"&gt;&lt;/h3&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p id="modal-text" class="text-gray-600 leading-relaxed"&gt;&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;button onclick="closeModal()" class="w-full py-4 bg-pink-500 text-white font-bold rounded-2xl shadow-md hover:bg-pink-600 transition-colors"&gt;わかった！&lt;/button&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &lt;/div&gt;</p><p>&nbsp; &nbsp; &lt;script&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; // --- Sakura Particles ---<br>&nbsp; &nbsp; &nbsp; &nbsp; const canvas = document.getElementById('sakura-canvas');<br>&nbsp; &nbsp; &nbsp; &nbsp; const ctx = canvas.getContext('2d');<br>&nbsp; &nbsp; &nbsp; &nbsp; let petals = [];<br>&nbsp; &nbsp; &nbsp; &nbsp; let celebrating = false;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function resizeCanvas() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.width = window.innerWidth;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; canvas.height = window.innerHeight;<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; window.addEventListener('resize', resizeCanvas);<br>&nbsp; &nbsp; &nbsp; &nbsp; resizeCanvas();</p><p>&nbsp; &nbsp; &nbsp; &nbsp; class Petal {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; constructor() { this.reset(); }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; reset() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.x = Math.random() * canvas.width;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.y = celebrating ? canvas.height + 20 : -20;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.w = 8 + Math.random() * 12;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.h = this.w * 0.8;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.opacity = 0.5 + Math.random() * 0.5;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.speed = (celebrating ? -5 : 1) - Math.random() * 2;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.curve = Math.random() * 2;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.angle = Math.random() * Math.PI * 2;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.phi = Math.random() * Math.PI * 2;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; update() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.y += this.speed;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.x += Math.sin(this.phi) * this.curve;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.phi += 0.01;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; this.angle += 0.02;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!celebrating &amp;&amp; this.y &gt; canvas.height) this.reset();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (celebrating &amp;&amp; this.y &lt; -50) this.reset();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; draw() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ctx.save();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ctx.translate(this.x, this.y);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ctx.rotate(this.angle);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ctx.beginPath();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ctx.ellipse(0, 0, this.w / 2, this.h / 2, 0, 0, Math.PI * 2);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ctx.fillStyle = `rgba(255, 183, 197, ${this.opacity})`;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ctx.fill();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ctx.restore();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; for (let i = 0; i &lt; 40; i++) petals.push(new Petal());</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function animateSakura() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ctx.clearRect(0, 0, canvas.width, canvas.height);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; petals.forEach(p =&gt; { p.update(); p.draw(); });<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; requestAnimationFrame(animateSakura);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; animateSakura();</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function startCelebration() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; celebrating = true;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; setTimeout(() =&gt; { celebrating = false; }, 3000);<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; // --- Logic ---<br>&nbsp; &nbsp; &nbsp; &nbsp; let selectedSticker = '🌸';<br>&nbsp; &nbsp; &nbsp; &nbsp; let works = [];<br>&nbsp; &nbsp; &nbsp; &nbsp; let readCount = 0;<br>&nbsp; &nbsp; &nbsp; &nbsp; let badges = { read: false, posted: false, commented: false };</p><p>&nbsp; &nbsp; &nbsp; &nbsp; window.onload = () =&gt; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const saved = localStorage.getItem('spring_works_v3');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (saved) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; works = JSON.parse(saved);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; renderGallery();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; };</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function talkHaruChan(msg) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const haruMsg = document.getElementById('haru-msg');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const messages = [<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "「いいところ」をみつけて感想をおくろう！",<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "きみの言葉でみんなが笑顔になるよ♪",<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "すてきな作品がいっぱいだね！",<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; "感想をもらうとうれしくなるよね！"<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ];<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; haruMsg.innerText = msg || messages[Math.floor(Math.random() * messages.length)];<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function showTip(term, tip) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; showModal(term + "の豆知識", tip, "💡");<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; readCount++;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (readCount &gt;= 3 &amp;&amp; !badges.read) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; badges.read = true;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('badge-1').classList.remove('grayscale');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('badge-1').classList.add('badge-get');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function selectSticker(emoji) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; selectedSticker = emoji;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.querySelectorAll('.sticker-item').forEach(el =&gt; el.classList.remove('sticker-selected'));<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; event.currentTarget.classList.add('sticker-selected');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('preview-sticker').innerText = emoji;<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function switchTab(tab) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('sec-learn').classList.add('hidden');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('sec-write').classList.add('hidden');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('sec-gallery').classList.add('hidden');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ['learn', 'write', 'gallery'].forEach(t =&gt; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById(`tab-${t}`).className = 'px-3 md:px-5 py-2 rounded-lg font-bold transition-all text-gray-500 hover:bg-white/60';<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; });<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById(`sec-${tab}`).classList.remove('hidden');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById(`tab-${tab}`).className = 'px-3 md:px-5 py-2 rounded-lg font-bold transition-all tab-active';<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function saveWork() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const author = document.getElementById('author').value.trim();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const content = document.getElementById('work-content').value.trim();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const comment = document.getElementById('work-comment').value.trim();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const type = document.querySelector('input[name="type"]:checked').value;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!author || !content) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; showModal("お名前を教えて！", "作品となまえを書いてからボタンをおしてね。", "📝");<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const newWork = {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; id: Date.now(),<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; author, content, comment, type, sticker: selectedSticker,<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; date: new Date().toLocaleDateString('ja-JP'),<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; feedback: []<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; };</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; works.unshift(newWork);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; saveData();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; renderGallery();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; startCelebration();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!badges.posted) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; badges.posted = true;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('badge-2').classList.remove('grayscale');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('badge-2').classList.add('badge-get');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; showModal("やったね！", "作品がギャラリーにならんだよ！", "🎉");<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('work-content').value = '';<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('work-comment').value = '';<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; setTimeout(() =&gt; { closeModal(); switchTab('gallery'); }, 1500);<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function addFeedback(workId) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const input = document.getElementById(`feedback-input-${workId}`);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const text = input.value.trim();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!text) return;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const work = works.find(w =&gt; w.id === workId);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (work) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; work.feedback.push(text);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; saveData();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; renderGallery();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; talkHaruChan("すてきな感想をありがとう！");<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (!badges.commented) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; badges.commented = true;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('badge-3').classList.remove('grayscale');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('badge-3').classList.add('badge-get');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function saveData() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; localStorage.setItem('spring_works_v3', JSON.stringify(works));<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function renderGallery() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const container = document.getElementById('gallery-container');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const emptyMsg = document.getElementById('empty-msg');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; container.querySelectorAll('.work-card').forEach(c =&gt; c.remove());</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (works.length === 0) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; emptyMsg.style.display = 'block';<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; return;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; emptyMsg.style.display = 'none';</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; works.forEach(work =&gt; {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const card = document.createElement('div');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; card.className = 'work-card glass p-6 rounded-[40px] shadow-lg border-none flex flex-col items-center bounce-hover relative overflow-hidden';<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; let feedbackHtml = work.feedback.map(f =&gt; `&lt;div class="comment-bubble mincho"&gt;${f}&lt;/div&gt;`).join('');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; card.innerHTML = `<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="absolute -top-2 -left-2 w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center text-3xl opacity-40 select-none"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ${work.sticker}<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="w-full flex justify-between items-start mb-4"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;span class="text-[10px] font-bold px-3 py-1 bg-pink-500 text-white rounded-full"&gt;${work.type}&lt;/span&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="h-56 flex items-center justify-center mb-6 border-r-2 border-dashed border-pink-100 pr-6"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="vertical-text mincho text-2xl text-gray-700 leading-loose h-full tracking-widest"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ${work.content.replace(/\n/g, '&lt;br&gt;')}<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="w-full pt-4 border-t border-pink-50 text-center"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;p class="font-bold text-gray-800"&gt;${work.author} さんの作品&lt;/p&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;</p><p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;!-- Feedback Area --&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="w-full mt-6 space-y-4"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="max-h-32 overflow-y-auto px-2"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ${feedbackHtml}<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;div class="flex gap-2"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;input type="text" id="feedback-input-${work.id}" placeholder="感想をおくろう！"&nbsp;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; class="flex-1 text-xs p-2 rounded-xl border-none ring-1 ring-pink-100 focus:ring-2 focus:ring-pink-300 outline-none bg-white/80"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;button onclick="addFeedback(${work.id})" class="bg-pink-400 text-white p-2 rounded-xl hover:bg-pink-500 transition-colors"&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 📮<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/button&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &lt;/div&gt;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; `;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; container.appendChild(card);<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; });<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function clearGallery() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; if (confirm('リセットしてもいいですか？')) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; works = [];<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; localStorage.removeItem('spring_works_v3');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; renderGallery();<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function showModal(title, text, icon) {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const modal = document.getElementById('modal');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const content = document.getElementById('modal-content');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('modal-title').innerText = title;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('modal-text').innerText = text;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; document.getElementById('modal-icon').innerText = icon;<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; modal.classList.remove('hidden');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; setTimeout(() =&gt; { content.classList.remove('scale-95', 'opacity-0'); content.classList.add('scale-100', 'opacity-100'); }, 10);<br>&nbsp; &nbsp; &nbsp; &nbsp; }</p><p>&nbsp; &nbsp; &nbsp; &nbsp; function closeModal() {<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const modal = document.getElementById('modal');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; const content = document.getElementById('modal-content');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; content.classList.remove('scale-100', 'opacity-100');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; content.classList.add('scale-95', 'opacity-0');<br>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; setTimeout(() =&gt; { modal.classList.add('hidden'); }, 300);<br>&nbsp; &nbsp; &nbsp; &nbsp; }<br>&nbsp; &nbsp; &lt;/script&gt;<br>&lt;/body&gt;<br>&lt;/html&gt;</p></body></html>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>春のいぶき - わくわく言葉ランド</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&family=Shippori+Mincho:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --spring-pink: #ffecf2;
+            --spring-blue: #e0f2fe;
+            --sakura-color: #ffb7c5;
+        }
+        body {
+            font-family: 'Zen Maru Gothic', sans-serif;
+            background: linear-gradient(135deg, var(--spring-blue) 0%, var(--spring-pink) 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        canvas#sakura-canvas {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 0;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .mincho { font-family: 'Shippori Mincho', serif; }
+        .vertical-text {
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+        }
+        .tab-active {
+            color: #db2777;
+            background: white;
+            box-shadow: 0 4px 12px rgba(219, 39, 119, 0.2);
+            transform: scale(1.05);
+        }
+        .bounce-hover:hover { transform: scale(1.02); transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .card-spring { cursor: pointer; transition: all 0.3s ease; }
+        .card-spring:active { transform: scale(0.95); }
+        
+        @keyframes pulse-gold {
+            0% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(250, 204, 21, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(250, 204, 21, 0); }
+        }
+        .badge-get { animation: pulse-gold 2s infinite; background: #facc15 !important; color: white !important; }
+
+        .sticker-item { cursor: pointer; border-radius: 12px; transition: all 0.2s; }
+        .sticker-item:hover { background: rgba(255, 255, 255, 0.8); transform: rotate(5deg); }
+        .sticker-selected { border: 3px solid #f472b6; background: white; transform: scale(1.1); }
+
+        .comment-bubble {
+            background: white;
+            border-radius: 12px;
+            padding: 6px 12px;
+            font-size: 0.75rem;
+            position: relative;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            margin-bottom: 4px;
+            text-align: left;
+        }
+        .comment-bubble::after {
+            content: '';
+            position: absolute;
+            left: 10px;
+            bottom: -8px;
+            border-style: solid;
+            border-width: 8px 8px 0 0;
+            border-color: white transparent transparent transparent;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <canvas id="sakura-canvas"></canvas>
+
+    <!-- Character Guide (はるるん) -->
+    <div id="guide-char" class="fixed bottom-6 right-6 z-50 flex items-end gap-3 group cursor-pointer" onclick="talkHaruChan()">
+        <div class="glass p-3 rounded-2xl shadow-lg max-w-[200px] text-xs opacity-0 group-hover:opacity-100 transition-opacity translate-y-2 group-hover:translate-y-0">
+            <p id="haru-msg">こんにちは！いっしょに春をみつけよう！</p>
+        </div>
+        <div class="w-16 h-16 bg-white rounded-full shadow-lg border-2 border-pink-300 flex items-center justify-center text-3xl animate-bounce">
+            🧚‍♀️
+        </div>
+    </div>
+
+    <!-- Header & Badges -->
+    <header class="sticky top-0 z-40 px-4 py-3">
+        <div class="max-w-5xl mx-auto glass rounded-2xl shadow-sm px-6 py-3 flex flex-wrap justify-between items-center gap-4">
+            <h1 class="text-xl md:text-2xl font-bold text-pink-600 flex items-center gap-2">
+                <span>🌸</span>春のいぶき
+            </h1>
+            
+            <div class="flex items-center gap-3">
+                <div class="flex gap-1" id="badge-container">
+                    <span id="badge-1" class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm grayscale transition-all" title="節気をよんだ！">📖</span>
+                    <span id="badge-2" class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm grayscale transition-all" title="はじめて投稿した！">🖋️</span>
+                    <span id="badge-3" class="w-8 h-8 rounded-full bg-gray-200 flex items-center justify-center text-sm grayscale transition-all" title="感想を伝えた！">💬</span>
+                </div>
+                
+                <nav class="flex gap-1 p-1 bg-white/40 rounded-xl">
+                    <button onclick="switchTab('learn')" id="tab-learn" class="px-3 md:px-5 py-2 rounded-lg font-bold transition-all tab-active">学ぶ</button>
+                    <button onclick="switchTab('write')" id="tab-write" class="px-3 md:px-5 py-2 rounded-lg font-bold transition-all text-gray-500">つくる</button>
+                    <button onclick="switchTab('gallery')" id="tab-gallery" class="px-3 md:px-5 py-2 rounded-lg font-bold transition-all text-gray-500">みる</button>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-5xl mx-auto p-4 relative z-10">
+
+        <!-- 1. Learn Section -->
+        <section id="sec-learn" class="space-y-8">
+            <div class="glass p-8 rounded-3xl border-none shadow-xl text-center">
+                <h2 class="text-3xl font-bold text-pink-700 mincho italic mb-2">春のひみつカード</h2>
+                <p class="text-gray-600 text-sm">カードをえらんで、春の言葉をおぼえよう。クリックすると豆知識がでるよ！</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div onclick="showTip('立春', '昔はこの日が新しい一年の始まりだったんだよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover">
+                    <div class="text-4xl mb-4">🌱</div>
+                    <h3 class="text-2xl font-bold mincho text-pink-600">立春</h3>
+                    <p class="text-xs text-pink-400 my-2">2月4日ごろ</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">冬がおわり、春がはじまる日。暦（こよみ）のうえではもう春なんだね。</p>
+                </div>
+                <div onclick="showTip('雨水', 'ひな人形を飾るのにぴったりの日と言われているよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover">
+                    <div class="text-4xl mb-4">💧</div>
+                    <h3 class="text-2xl font-bold mincho text-pink-600">雨水</h3>
+                    <p class="text-xs text-pink-400 my-2">2月19日ごろ</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">雪が雨にかわるころ。土がやわらかくなって、植物がのびるじゅんびをするよ。</p>
+                </div>
+                <div onclick="showTip('啓蟄', 'カエルやヘビもこのころに起きだしてくるよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover">
+                    <div class="text-4xl mb-4">🦋</div>
+                    <h3 class="text-2xl font-bold mincho text-pink-600">啓蟄</h3>
+                    <p class="text-xs text-pink-400 my-2">3月6日ごろ</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">虫たちが冬眠からさめて、土の中から顔をだすころだよ。</p>
+                </div>
+                <div onclick="showTip('春分', '「ぼたもち」を食べてお祝いする風習があるよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover">
+                    <div class="text-4xl mb-4">☀️</div>
+                    <h3 class="text-2xl font-bold mincho text-pink-600">春分</h3>
+                    <p class="text-xs text-pink-400 my-2">3月21日ごろ</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">昼と夜の長さが同じになる日。ここから日がどんどん長くなっていくよ。</p>
+                </div>
+                <div onclick="showTip('清明', '「清浄明潔」をちぢめたものだよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover">
+                    <div class="text-4xl mb-4">🌸</div>
+                    <h3 class="text-2xl font-bold mincho text-pink-600">清明</h3>
+                    <p class="text-xs text-pink-400 my-2">4月5日ごろ</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">空気がキラキラして、花がさきほこる一番きれいなときだよ。</p>
+                </div>
+                <div onclick="showTip('穀雨', 'この雨のおかげで、おいしい野菜が育つんだよ！')" class="card-spring glass p-6 rounded-2xl flex flex-col items-center text-center bounce-hover">
+                    <div class="text-4xl mb-4">🌿</div>
+                    <h3 class="text-2xl font-bold mincho text-pink-600">穀雨</h3>
+                    <p class="text-xs text-pink-400 my-2">4月20日ごろ</p>
+                    <p class="text-sm text-gray-600 leading-relaxed">田畑をうるおす春の雨。夏にむかって木々がしげるよ。</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. Write Section -->
+        <section id="sec-write" class="hidden space-y-6">
+            <div class="glass p-8 rounded-3xl shadow-xl">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-bold text-pink-500 mb-2 px-1">🖋️ おなまえ</label>
+                            <input type="text" id="author" placeholder="なまえを書いてね" 
+                                class="w-full p-4 rounded-xl border-none ring-2 ring-pink-100 focus:ring-4 focus:ring-pink-300 outline-none transition-all bg-white/60">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-pink-500 mb-3 px-1">🎨 作品の種類</label>
+                            <div class="flex gap-4 text-sm">
+                                <label class="flex-1 cursor-pointer group">
+                                    <input type="radio" name="type" value="俳句" checked class="hidden peer">
+                                    <div class="p-3 text-center rounded-xl border-2 border-transparent bg-white/60 peer-checked:bg-pink-500 peer-checked:text-white transition-all">
+                                        俳句 <span class="block text-[10px]">五・七・五</span>
+                                    </div>
+                                </label>
+                                <label class="flex-1 cursor-pointer group">
+                                    <input type="radio" name="type" value="短歌" class="hidden peer">
+                                    <div class="p-3 text-center rounded-xl border-2 border-transparent bg-white/60 peer-checked:bg-pink-500 peer-checked:text-white transition-all">
+                                        短歌 <span class="block text-[10px]">五・七・五・七・七</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-pink-500 mb-3 px-1">✨ カードのスタンプ</label>
+                            <div class="grid grid-cols-5 gap-2" id="sticker-selector">
+                                <div onclick="selectSticker('🌸')" class="sticker-item p-2 text-2xl flex justify-center sticker-selected">🌸</div>
+                                <div onclick="selectSticker('🦋')" class="sticker-item p-2 text-2xl flex justify-center">🦋</div>
+                                <div onclick="selectSticker('🐣')" class="sticker-item p-2 text-2xl flex justify-center">🐣</div>
+                                <div onclick="selectSticker('🐝')" class="sticker-item p-2 text-2xl flex justify-center">🐝</div>
+                                <div onclick="selectSticker('🍀')" class="sticker-item p-2 text-2xl flex justify-center">🍀</div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-bold text-pink-500 mb-2 px-1">💭 こめた想い</label>
+                            <textarea id="work-comment" placeholder="どんな春を見つけたかな？" 
+                                class="w-full p-4 h-24 rounded-xl border-none ring-2 ring-pink-50 focus:ring-4 focus:ring-pink-300 outline-none transition-all bg-white/60" style="resize:none;"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-col">
+                        <label class="block text-sm font-bold text-pink-500 mb-2 px-1">📜 あなたの作品</label>
+                        <div class="flex-1 relative bg-white/50 rounded-2xl p-6 border-4 border-double border-pink-200 flex items-center justify-center overflow-hidden">
+                            <div id="preview-sticker" class="absolute top-4 right-4 text-4xl opacity-50 select-none">🌸</div>
+                            <textarea id="work-content" placeholder="五・七・五 で書いてみよう！" 
+                                class="w-full h-64 p-4 mincho text-3xl vertical-text bg-transparent outline-none text-gray-700 leading-loose placeholder:text-gray-200" 
+                                style="resize: none;"></textarea>
+                        </div>
+                        <button onclick="saveWork()" class="mt-6 py-4 bg-pink-500 hover:bg-pink-600 text-white font-bold rounded-2xl shadow-lg transform active:scale-95 text-lg transition-all">
+                            みんなに見せる！ 🚀
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. Gallery Section -->
+        <section id="sec-gallery" class="hidden space-y-8">
+            <div class="flex flex-wrap justify-between items-end gap-4">
+                <div>
+                    <h2 class="text-3xl font-bold text-gray-800 mincho">春のいぶきギャラリー</h2>
+                    <p class="text-gray-500 mt-1">みんなの「春」にあたたかい感想をおくろう！</p>
+                </div>
+            </div>
+
+            <div id="gallery-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 pb-20">
+                <div id="empty-msg" class="col-span-full py-32 text-center glass rounded-3xl">
+                    <div class="text-6xl mb-4">📭</div>
+                    <p class="text-gray-400 italic">まだ作品が届いていないよ！</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Modal UI -->
+    <div id="modal" class="fixed inset-0 bg-pink-900/10 backdrop-blur-md hidden flex items-center justify-center p-4 z-[100]">
+        <div class="bg-white p-10 rounded-[40px] max-w-sm w-full text-center space-y-6 shadow-2xl transform transition-all scale-95 opacity-0" id="modal-content">
+            <div id="modal-icon" class="text-7xl">🎁</div>
+            <h3 id="modal-title" class="text-2xl font-bold text-pink-600"></h3>
+            <p id="modal-text" class="text-gray-600 leading-relaxed"></p>
+            <button onclick="closeModal()" class="w-full py-4 bg-pink-500 text-white font-bold rounded-2xl shadow-md hover:bg-pink-600 transition-colors">わかった！</button>
+        </div>
+    </div>
+
+    <script>
+        // --- Sakura Particles Animation ---
+        const canvas = document.getElementById('sakura-canvas');
+        const ctx = canvas.getContext('2d');
+        let petals = [];
+        let celebrating = false;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Petal {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = celebrating ? canvas.height + 20 : -20;
+                this.w = 8 + Math.random() * 12;
+                this.h = this.w * 0.8;
+                this.opacity = 0.5 + Math.random() * 0.5;
+                this.speed = (celebrating ? -5 : 1) - Math.random() * 2;
+                this.curve = Math.random() * 2;
+                this.angle = Math.random() * Math.PI * 2;
+                this.phi = Math.random() * Math.PI * 2;
+            }
+            update() {
+                this.y += this.speed;
+                this.x += Math.sin(this.phi) * this.curve;
+                this.phi += 0.01;
+                this.angle += 0.02;
+                if (!celebrating && this.y > canvas.height) this.reset();
+                if (celebrating && this.y < -50) this.reset();
+            }
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate(this.angle);
+                ctx.beginPath();
+                ctx.ellipse(0, 0, this.w / 2, this.h / 2, 0, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(255, 183, 197, ${this.opacity})`;
+                ctx.fill();
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < 45; i++) petals.push(new Petal());
+
+        function animateSakura() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            petals.forEach(p => { p.update(); p.draw(); });
+            requestAnimationFrame(animateSakura);
+        }
+        animateSakura();
+
+        function startCelebration() {
+            celebrating = true;
+            setTimeout(() => { celebrating = false; }, 3000);
+        }
+
+        // --- Core Logic ---
+        let selectedSticker = '🌸';
+        let works = [];
+        let readCount = 0;
+        let badges = { read: false, posted: false, commented: false };
+
+        window.onload = () => {
+            const saved = localStorage.getItem('spring_works_final');
+            if (saved) {
+                works = JSON.parse(saved);
+                renderGallery();
+            }
+        };
+
+        function talkHaruChan(msg) {
+            const haruMsg = document.getElementById('haru-msg');
+            const messages = [
+                "「いいところ」をみつけて感想をおくろう！",
+                "きみの言葉でみんなが笑顔になるよ♪",
+                "すてきな作品がいっぱいだね！",
+                "感想をもらうとうれしくなるよね！",
+                "春をさがしにいこう！"
+            ];
+            haruMsg.innerText = msg || messages[Math.floor(Math.random() * messages.length)];
+        }
+
+        function showTip(term, tip) {
+            showModal(term + "の豆知識", tip, "💡");
+            readCount++;
+            if (readCount >= 3 && !badges.read) {
+                badges.read = true;
+                const b = document.getElementById('badge-1');
+                b.classList.remove('grayscale');
+                b.classList.add('badge-get');
+            }
+        }
+
+        function selectSticker(emoji) {
+            selectedSticker = emoji;
+            document.querySelectorAll('.sticker-item').forEach(el => el.classList.remove('sticker-selected'));
+            event.currentTarget.classList.add('sticker-selected');
+            document.getElementById('preview-sticker').innerText = emoji;
+        }
+
+        function switchTab(tab) {
+            document.getElementById('sec-learn').classList.add('hidden');
+            document.getElementById('sec-write').classList.add('hidden');
+            document.getElementById('sec-gallery').classList.add('hidden');
+            ['learn', 'write', 'gallery'].forEach(t => {
+                document.getElementById(`tab-${t}`).className = 'px-3 md:px-5 py-2 rounded-lg font-bold transition-all text-gray-500 hover:bg-white/60';
+            });
+            document.getElementById(`sec-${tab}`).classList.remove('hidden');
+            document.getElementById(`tab-${tab}`).className = 'px-3 md:px-5 py-2 rounded-lg font-bold transition-all tab-active';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function saveWork() {
+            const author = document.getElementById('author').value.trim();
+            const content = document.getElementById('work-content').value.trim();
+            const comment = document.getElementById('work-comment').value.trim();
+            const type = document.querySelector('input[name="type"]:checked').value;
+
+            if (!author || !content) {
+                showModal("お名前を教えて！", "作品となまえを書いてからボタンをおしてね。", "📝");
+                return;
+            }
+
+            const newWork = {
+                id: Date.now(),
+                author, content, comment, type, sticker: selectedSticker,
+                date: new Date().toLocaleDateString('ja-JP'),
+                feedback: []
+            };
+
+            works.unshift(newWork);
+            saveData();
+            
+            renderGallery();
+            startCelebration();
+            
+            if (!badges.posted) {
+                badges.posted = true;
+                const b = document.getElementById('badge-2');
+                b.classList.remove('grayscale');
+                b.classList.add('badge-get');
+            }
+
+            showModal("やったね！", "作品がギャラリーにならんだよ！", "🎉");
+            document.getElementById('work-content').value = '';
+            document.getElementById('work-comment').value = '';
+            setTimeout(() => { closeModal(); switchTab('gallery'); }, 1500);
+        }
+
+        function addFeedback(workId) {
+            const input = document.getElementById(`feedback-input-${workId}`);
+            const text = input.value.trim();
+            if (!text) return;
+
+            const work = works.find(w => w.id === workId);
+            if (work) {
+                work.feedback.push(text);
+                saveData();
+                renderGallery();
+                talkHaruChan("すてきな感想をありがとう！");
+                
+                if (!badges.commented) {
+                    badges.commented = true;
+                    const b = document.getElementById('badge-3');
+                    b.classList.remove('grayscale');
+                    b.classList.add('badge-get');
+                }
+            }
+        }
+
+        function saveData() {
+            localStorage.setItem('spring_works_final', JSON.stringify(works));
+        }
+
+        function renderGallery() {
+            const container = document.getElementById('gallery-container');
+            const emptyMsg = document.getElementById('empty-msg');
+            container.querySelectorAll('.work-card').forEach(c => c.remove());
+
+            if (works.length === 0) {
+                emptyMsg.style.display = 'block';
+                return;
+            }
+
+            emptyMsg.style.display = 'none';
+
+            works.forEach(work => {
+                const card = document.createElement('div');
+                card.className = 'work-card glass p-6 rounded-[40px] shadow-lg border-none flex flex-col items-center bounce-hover relative overflow-hidden';
+                
+                let feedbackHtml = work.feedback.map(f => `<div class="comment-bubble mincho">${f}</div>`).join('');
+                
+                card.innerHTML = `
+                    <div class="absolute -top-2 -left-2 w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center text-3xl opacity-40 select-none">
+                        ${work.sticker}
+                    </div>
+                    <div class="w-full flex justify-between items-start mb-4">
+                        <span class="text-[10px] font-bold px-3 py-1 bg-pink-500 text-white rounded-full">${work.type}</span>
+                        <span class="text-[10px] text-gray-400 font-serif">${work.date}</span>
+                    </div>
+                    <div class="h-56 flex items-center justify-center mb-6 border-r-2 border-dashed border-pink-100 pr-6">
+                        <div class="vertical-text mincho text-2xl text-gray-700 leading-loose h-full tracking-widest">
+                            ${work.content.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                    <div class="w-full pt-4 border-t border-pink-50 text-center">
+                        <p class="font-bold text-gray-800">${work.author} さんの作品</p>
+                        <p class="text-xs text-gray-400 mt-1 italic">「${work.comment || '春を見つけました。'}」</p>
+                    </div>
+
+                    <!-- Feedback Area -->
+                    <div class="w-full mt-6 space-y-4">
+                        <div class="max-h-32 overflow-y-auto px-2">
+                            ${feedbackHtml}
+                        </div>
+                        <div class="flex gap-2">
+                            <input type="text" id="feedback-input-${work.id}" placeholder="いいところを教えて！" 
+                                class="flex-1 text-xs p-2 rounded-xl border-none ring-1 ring-pink-100 focus:ring-2 focus:ring-pink-300 outline-none bg-white/80">
+                            <button onclick="addFeedback(${work.id})" class="bg-pink-400 text-white p-2 rounded-xl hover:bg-pink-500 transition-all active:scale-90">
+                                📮
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function clearGallery() {
+            if (confirm('すべての作品を消去しますか？（この操作は取り消せません）')) {
+                works = [];
+                localStorage.removeItem('spring_works_final');
+                renderGallery();
+            }
+        }
+
+        function showModal(title, text, icon) {
+            const modal = document.getElementById('modal');
+            const content = document.getElementById('modal-content');
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-text').innerText = text;
+            document.getElementById('modal-icon').innerText = icon;
+            modal.classList.remove('hidden');
+            setTimeout(() => { 
+                content.classList.remove('scale-95', 'opacity-0'); 
+                content.classList.add('scale-100', 'opacity-100'); 
+            }, 10);
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('modal');
+            const content = document.getElementById('modal-content');
+            content.classList.remove('scale-100', 'opacity-100');
+            content.classList.add('scale-95', 'opacity-0');
+            setTimeout(() => { modal.classList.add('hidden'); }, 300);
+        }
+    </script>
+</body>
+</html>
